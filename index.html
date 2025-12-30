@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mostrador Unificado - Materiales Tu Casa</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Mostrador Unificado — Materiales Tu Casa</h1>
+        <p class="subtitle">v0.2 demo local (modo mock Odoo)</p>
+      </div>
+      <div class="operator">
+        <label for="operator-name">Operador</label>
+        <input id="operator-name" type="text" placeholder="Nombre" />
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <header class="card-header">
+          <h2>Importar catálogo (CSV / XLSX)</h2>
+          <div class="file-actions">
+            <input type="file" id="catalog-file" accept=".csv,.xlsx" />
+            <button id="load-demo">Cargar demo</button>
+          </div>
+        </header>
+        <div class="input-row">
+          <label>Buscar o escanear</label>
+          <input id="search" placeholder="SKU, nombre..." />
+        </div>
+        <div class="table-wrapper">
+          <table id="catalog-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>IVA</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <header class="card-header space-between">
+          <h2>Carrito</h2>
+          <span id="cart-total">$0.00</span>
+        </header>
+        <div class="table-wrapper">
+          <table id="cart-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Nombre</th>
+                <th>Cant.</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="checkout">
+          <div class="form-group">
+            <label>request_id (idempotente)</label>
+            <input type="text" id="request-id" placeholder="auto" />
+          </div>
+          <div class="form-group">
+            <label>Porcentaje entregado</label>
+            <input type="number" id="delivery-percent" min="0" max="100" value="100" />
+          </div>
+          <div class="form-group">
+            <label>Monto pagado</label>
+            <input type="number" id="paid-amount" min="0" step="0.01" />
+          </div>
+          <div class="form-group">
+            <label>Notas</label>
+            <textarea id="notes" rows="2" placeholder="Observaciones"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Regla de ruteo</label>
+            <div class="badge">Pago 100% + Entrega 100% → POS / resto → Sales</div>
+          </div>
+          <button id="checkout">Cobrar e imprimir</button>
+          <p id="odoo-route" class="route-label"></p>
+        </div>
+      </section>
+
+      <section class="card">
+        <header class="card-header">
+          <h2>Historial local</h2>
+          <div class="legend">
+            <span class="pill ok">OK</span>
+            <span class="pill pending">PENDIENTE SYNC</span>
+            <span class="pill error">IMPRESIÓN FALLÓ</span>
+          </div>
+        </header>
+        <div class="table-wrapper">
+          <table id="history-table">
+            <thead>
+              <tr>
+                <th>Request</th>
+                <th>Ruta</th>
+                <th>Totales</th>
+                <th>Estado</th>
+                <th>Tickets</th>
+                <th>Auditoría</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <header class="card-header space-between">
+          <div>
+            <h2>Diagnóstico impresora</h2>
+            <p class="muted">Epson TM-m30III ePOS</p>
+          </div>
+          <span id="printer-status" class="pill">UNKNOWN</span>
+        </header>
+        <div class="input-row">
+          <label>URL impresora ePOS (http://IP/epson/print)</label>
+          <input id="printer-url" placeholder="http://192.168.0.50/epson/print" />
+        </div>
+        <div class="diagnostics">
+          <button id="btn-ping">Probar conexión</button>
+          <button id="btn-test-ticket">Imprimir ticket de prueba</button>
+        </div>
+        <pre id="diag-log"></pre>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
