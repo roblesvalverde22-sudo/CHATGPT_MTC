@@ -1,0 +1,9 @@
+{
+  "name": "mostrador-unificado-mtc",
+  "version": "0.1.0",
+  "description": "MVP mostrador unificado Materiales Tu Casa",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js"
+  }
+}
